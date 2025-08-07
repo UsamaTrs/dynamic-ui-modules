@@ -87,7 +87,7 @@
                 style="color: #5d4037"
               ></i>
             </button>
-            <button (click)="undoMode ? onUndo() : onDelete()">
+            <button #borderDiv (click)="undoMode ? onUndo() : onDelete()">
               <i *ngIf="!undoMode" class="fa-solid fa-trash fa-lg" style="color: #5d4037;"></i>
               <i *ngIf="undoMode" class="fa-solid fa-trash-arrow-up fa-lg" style="color: #5d4037;"></i>
             </button>
@@ -99,7 +99,7 @@
       <form
         class="module-form"
         #myForm="ngForm"
-        (ngSubmit)="editMode ? onSave(myForm) : newModuleSubmit(myForm)"
+        (ngSubmit)="editMode ? onSave(myForm) : onCreateNew(myForm)"
       >
         <div class="space-between">
           <h5>Title</h5>
@@ -169,7 +169,7 @@
         <h4>{{s_text}}</h4>
       </div>
       <div class="modules">
-        @for (module of modules; track module.id) {
+        @for (module of modules; track module._id) {
         <div
           (click)="moduleClickHandler(module, $event)"
           class="module-item"

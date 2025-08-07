@@ -161,6 +161,13 @@ button:disabled {
    opacity: var(--button-disabled-opacity);
    cursor: var(--button-disabled-cursor);
 }
+.running-border {
+  border: 2px solid;
+  animation: border-spin 1s linear infinite;
+}
+@keyframes border-spin {
+  to { border-color: transparent; }
+}
 #new{
    margin-top: .5rem;
    width: 100%;
@@ -201,7 +208,7 @@ button:disabled {
   /* min-width: full; */
   /* border:1px solid; */
   display :grid;
-  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
   gap:.5rem;
   height: 78%;
   overflow-y: auto;
@@ -212,7 +219,7 @@ button:disabled {
   background-color: var(--border-color);
   border-radius: var(--border-radius-lg);
   border: var(--border-width) solid var(--border-color-light);
-  min-height: 14rem;
+  height: 14rem;
   display: flex;
   justify-content: start;
   align-items: end;
