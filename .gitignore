@@ -1,17 +1,84 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
-# Compiled output
+# # Compiled output
+# /dist
+# /tmp
+# /out-tsc
+# /bazel-out
+
+# # Node
+# /node_modules
+# npm-debug.log
+# yarn-error.log
+
+# # IDEs and editors
+# .idea/
+# .project
+# .classpath
+# .c9/
+# *.launch
+# .settings/
+# *.sublime-workspace
+
+# # Visual Studio Code
+# .vscode/*
+# !.vscode/settings.json
+# !.vscode/tasks.json
+# !.vscode/launch.json
+# !.vscode/extensions.json
+# .history/*
+
+# # Miscellaneous
+# /.angular/cache
+# .sass-cache/
+# /connect.lock
+# /coverage
+# /libpeerconnection.log
+# testem.log
+# /typings
+
+# # System files
+# .DS_Store
+# Thumbs.db
+
+# # === BACKEND NODE ===
+# backend/node_modules/
+# backend/dist/
+# backend/.env
+
+# === FRONTEND ANGULAR ===
 /dist
 /tmp
 /out-tsc
 /bazel-out
+/.angular/cache
 
-# Node
+# === BACKEND NODE ===
+backend/node_modules/
+backend/dist/
+backend/.env
+
+# === IONIC ===
+www/
+android/
+ios/
+capacitor.config.ts
+capacitor.config.json
+
+# === DEPENDENCIES ===
 /node_modules
-npm-debug.log
-yarn-error.log
+**/node_modules
 
-# IDEs and editors
+# === ENV FILES ===
+*.env
+
+# === LOGS ===
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# === IDEs / EDITORS ===
 .idea/
 .project
 .classpath
@@ -19,29 +86,22 @@ yarn-error.log
 *.launch
 .settings/
 *.sublime-workspace
-
-# Visual Studio Code
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.history/*
 
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
-
-# System files
+# === OS FILES ===
 .DS_Store
 Thumbs.db
 
-# === BACKEND NODE ===
-backend/node_modules/
-backend/dist/
-backend/.env
+# === MISC ===
+/coverage
+/connect.lock
+testem.log
+.typings
+.history/
+.sass-cache/
+libpeerconnection.log
+.store/

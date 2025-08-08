@@ -2,13 +2,24 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Inject, inject, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ModuleService } from '../../Services/module.service';
-
+import * as _ from 'lodash'
 interface Module {
   _id?: number | string;
   title: string;
   avatar: string;
   bgColor: string;
   fontColor: string;
+}
+export interface ScreenSettings {
+  _id?: string;
+  bgColor: string;
+  fontColor: string;
+  fontFamily: string;
+  headings: {
+    line1: string;
+    line2: string;
+  };
+  text: string;
 }
 
 @Component({
@@ -20,20 +31,34 @@ interface Module {
 export class MainComponent implements OnInit {
   //Injections
   moduleService = inject(ModuleService);
-
+  declare JSON: any;
   //Html Variables
   @ViewChild('borderDiv') borderDiv!: ElementRef;
 
-  //screen
-  bgColor: string = '#e0e0e0'; // Default white color matching the input's value
+  // screen // Default white color matching the input's value
+  bgColor: string = '#e0e0e0';
   fontColor: string = '#333333';
   fontFamily: string = 'Poppins';
   s_heading1: string = 'What Brings You';
   s_heading2: string = 'to Silent Moon?';
   s_text: string = 'choose a topic to focus on:';
 
+  originalScreen! : ScreenSettings;
+  screen!: ScreenSettings;
+  isSettingsChanged: boolean = false
+  // = {
+  //   bgColor: '#e0e0e0',
+  //   fontColor: '#333333',
+  //   fontFamily: 'Poppins',
+  //   headings: {
+  //     line1: 'What Brings You',
+  //     line2: 'to Silent Moon?'
+  //   },
+  //   text: 'choose a topic to focus on:'
+  // };
   //Modules
   modules?: Module[];
+  isModuleForm : boolean = false
 
   timeOutId : any = null
   newMode: boolean = false;
@@ -116,6 +141,8 @@ export class MainComponent implements OnInit {
   // }));
   ngOnInit(): void {
     this.loadModules()
+    this.loadScreenSettings()
+    this.originalScreen = this.screen
   }
   loadModules(){
     this.moduleService.getModules().subscribe({
@@ -131,6 +158,36 @@ export class MainComponent implements OnInit {
         console.log(err);
       },
     });
+  }
+  loadScreenSettings () {
+    this.moduleService.getScreenSettings().subscribe({
+      next:(response)=> {
+         this.originalScreen = response;
+         this.screen = response
+      },
+      error(err) {
+        console.log(err)
+      },
+    })
+  }
+  onSaveSettings () {
+    if(this.screen._id){
+      this.moduleService.updateScreenSettings(this.screen._id, this.screen).subscribe({
+        next:(response)=>{
+            console.log(response)
+            this.originalScreen = response
+            this.screen = response
+            this.loadScreenSettings()
+            this.isSettingsChanged = false
+        },
+        error(err) {
+          console.log(err)
+        },
+      })
+    }
+  }
+  onSettingsChange ( ){
+   this.isSettingsChanged = true
   }
   onCreateNew(form: NgForm) {
       let newForm = this.moduleForm;
@@ -276,7 +333,7 @@ export class MainComponent implements OnInit {
           console.log(err)
         },
       })
-    }, 10000);
+    }, 3000);
     }
   }
   onUndo() {

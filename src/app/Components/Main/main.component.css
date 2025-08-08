@@ -171,6 +171,7 @@ button:disabled {
 #new{
    margin-top: .5rem;
    width: 100%;
+   height: rem;
    /* margin-left: 25%; */
 }
  .space-between {

@@ -1,0 +1,22 @@
+<ion-content>
+  <div class="screen-container"
+       [style.background]="screen.bgColor"
+       [style.fontFamily]="screen.fontFamily">
+    <div class="header-section">
+      <h2 [style.color]="screen.fontColor">{{ screen.headings.line1 }}</h2>
+      <h2 [style.color]="screen.fontColor">{{ screen.headings.line2 }}</h2>
+      <h4>{{ screen.text }}</h4>
+    </div>
+
+    <div class="modules">
+      @for (module of modules; track module._id) {
+        <div class="module-item"
+             [style.background-color]="module.bgColor"
+             [style.background-image]="'url(' + module.avatar + ')'"
+             (click)="onModuleClick(module)">
+          <h4 [style.color]="module.fontColor" class="module-title">{{ module.title }}</h4>
+        </div>
+      }
+    </div>
+  </div>
+</ion-content>
