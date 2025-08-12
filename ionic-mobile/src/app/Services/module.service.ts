@@ -1,27 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
+import { Module, ScreenSettings } from '../Interfaces/interfaces';
+// here when is this service gonna run like waht the priorities or the sequence ofexecution cuz in homepage.ts i have subscribed to modules and screensettings subject but when i run my app the it couldnt get data from these subjects and subjects return like empty why and i need to liek ctrl + s inside tabs html which then recall the service and then homepage and modules like the cards containing data starts working and get unstuck whcih they are when we run app for  the first time
 
-export interface Module {
-  _id?: string;
-  title: string;
-  avatar: string;
-  bgColor: string;
-  fontColor: string;
-}
-
-export interface ScreenSettings {
-  _id?: string;
-  bgColor: string;
-  fontColor: string;
-  fontFamily: string;
-  headings: {
-    line1: string;
-    line2: string;
-  };
-  text: string;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +23,7 @@ export class ModuleService {
     this.socket = io('http://localhost:3000');
 
     // Listen for real-time updates from web app
-    this.socket.on('modules', (modules: Module[]) => {
+    this.socket.on('modules', async (modules: Module[]) => {
       console.log('Received real-time modules from web app:', modules);
       this.modulesSubject.next(modules);
     });
@@ -50,32 +33,18 @@ export class ModuleService {
     });
 
     // Load initial data
-    this.loadModules();
-    this.loadScreenSettings();
+  this.loadModules();
+  this.loadScreenSettings();
   }
     // Screen settings methods
-  loadScreenSettings() {
-    this.http.get<ScreenSettings>(`${this.apiUrl}/screen-settings`).subscribe({
-      next: (settings) => {
-        console.log('Loaded screen settings:', settings);
-        this.screenSettingsSubject.next(settings);
-      },
-      error: (error) => {
-        console.error('Error loading screen settings:', error);
-      }
-    });
+  async loadScreenSettings () {
+  let settings = await firstValueFrom(this.http.get<ScreenSettings>(`${this.apiUrl}/screen-settings`))
+  this.screenSettingsSubject.next(settings)
   }
 
   // Only load modules - no CRUD operations
-  loadModules() {
-    this.http.get<Module[]>(`${this.apiUrl}/modules`).subscribe({
-      next: (modules) => {
-        console.log('Loaded modules:', modules);
-        this.modulesSubject.next(modules);
-      },
-      error: (error) => {
-        console.error('Error loading modules:', error);
-      }
-    });
+  async loadModules() {
+   let modules = await firstValueFrom( this.http.get<Module[]>(`${this.apiUrl}/modules`))
+   this.modulesSubject.next(modules)
   }
 }

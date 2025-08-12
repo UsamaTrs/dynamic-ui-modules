@@ -3,10 +3,11 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonTabButton, IonTabBar, I
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { Module, ModuleService, ScreenSettings } from '../Services/module.service';
+import {ModuleService } from '../Services/module.service';
 import { IonTabs, IonIcon } from "@ionic/angular/standalone";
 import { addIcons } from 'ionicons';
 import { home, person, cart, settings } from 'ionicons/icons';
+import { Module, ScreenSettings } from '../Interfaces/interfaces';
 // import { IonIcon } from "../../../node_modules/@ionic/angular/standalone/directives/icon";
 @Component({
   selector: 'app-home',
@@ -14,7 +15,7 @@ import { home, person, cart, settings } from 'ionicons/icons';
   styleUrls: ['home.page.scss'],
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, CommonModule, IonTabButton, IonTabBar, IonTabs, IonLabel, IonIcon],
 })
-export class HomePage {
+export class  HomePage implements OnInit {
   constructor() {
     addIcons({ home, person, cart, settings });
   }
@@ -29,7 +30,7 @@ export class HomePage {
   // s_text: string = 'choose a topic to focus on:';
 
   // Modules (view-only)
-  modules: Module[] = [];
+  modules!: Module[]
   screen! : ScreenSettings
 
   ngOnInit() {

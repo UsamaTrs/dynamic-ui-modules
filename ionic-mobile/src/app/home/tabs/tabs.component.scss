@@ -1,0 +1,16 @@
+ion-tab-bar {
+
+  --border-radius: 50%;
+  --ion-tab-bar-background: #d7ccc8;
+  --ion-tab-bar-border-color: transparent;
+  height: 60px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+  /* border-radius: 0.5rem 0.5rem 0rem 0rem; */
+  font-family: 'Poppins', sans-serif;
+  /* max-width: 100vw; */
+
+}

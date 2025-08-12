@@ -13,13 +13,14 @@
 .screen-container {
   position: relative;
   height: 100%;
-  padding: 20px;
+  padding: var(--spacing-sm) var(--spacing-md)  ;
+
   overflow-y: auto;
   // border: 10px solid rgb(187, 40, 40);
 }
 
 .header-section {
-
+  overflow: hidden  ;
 
   h2{
     color: var(--text-color);
@@ -67,14 +68,14 @@
 //   }
 // }
 
-// .module-title {
-//   padding: 12px;
-//   margin: 0;
-//   font-size: 14px;
-//   font-weight: bold;
-//   text-align: center;
-//   width: 100%;
-// }
+.module-title {
+  padding: 12px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+}
 
 .module-footer {
   position: absolute;
@@ -116,15 +117,23 @@
   text-transform: none;
   color: var(--text-color);
   font-weight: var(--font-weight-bold);
+  white-space: nowrap;
+
+
+
 }
 .screen-container h2:nth-of-type(2){
   text-transform: none;
   color: var(--text-color);
   font-weight: var(--font-weight-light);
+  white-space: nowrap;
+
 }
 .screen-container h4:nth-of-type(1){
   color: var(--text-light);
   font-weight: var(--font-weight-regular);
+  white-space: nowrap;
+
 }
 .modules {
   /* min-width: full; */
@@ -137,11 +146,20 @@
   scrollbar-width: none;
 
 }
+.modules-else {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap:.5rem;
+  height: 78%;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
 .module-item {
   background-color: var(--border-color);
   border-radius: var(--border-radius-lg);
   border: var(--border-width) solid var(--border-color-light);
-  height: 14rem;
+  height: 13rem;
   display: flex;
   justify-content: start;
   align-items: end;
@@ -149,10 +167,7 @@
   background-position: top;
   background-repeat: no-repeat;
   margin: var(--spacing-xs);
-  &:active {
-        transform: scale(0.95);
-      }
-
+  overflow: hidden;
 }
 .selected {
   animation: pulse 1.5s infinite;
@@ -176,7 +191,7 @@
   /* border-top: 1px solid; */
   border-radius: var(--border-radius-lg);
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   height: 6%;
   width: 26.1rem;
@@ -188,9 +203,9 @@
 }
 .module-footer > div {
 
-  /* border: 1px solid; */
+  // border: 5px solid black;
   padding: var(--border-radius-sm);
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .module-footer > div:hover {
@@ -201,6 +216,7 @@
 }
 
 
+//////////////////////////////////////////
 
 
 

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Module } from '../Interfaces/module_Interface';
-import { ScreenSettings } from '../../../ionic-mobile/src/app/Services/module.service';
+import { Module, ScreenSettings } from '../Interfaces/module_Interface';
+
 @Injectable({
   providedIn: 'root',
 })

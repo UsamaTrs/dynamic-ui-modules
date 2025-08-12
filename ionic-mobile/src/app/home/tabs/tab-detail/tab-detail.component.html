@@ -1,3 +1,11 @@
-<p>
-  tab-detail works!
-</p>
+<div style="height: 100%; margin: 0%; border-radius: 0%; justify-content:center ; padding-bottom: 8rem;" class="module-item"
+[style.background-color]="module.bgColor"
+[style.background-image]="'url(' + module.avatar + ')'"
+>
+<div  class="space-between">
+ <h4 [style.color]="module.fontColor" class="module-title">
+  {{ module.title }}
+</h4>
+<i [class]="'fa fa-lg ' + module.icon"></i>
+</div>
+</div>

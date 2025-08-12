@@ -5,6 +5,7 @@ const ModuleSchema = new mongoose.Schema({
   avatar: String,
   bgColor: String,
   fontColor: String,
+  icon:String,
 }, { timestamps: true });
 
  const Module = mongoose.model('Module', ModuleSchema);

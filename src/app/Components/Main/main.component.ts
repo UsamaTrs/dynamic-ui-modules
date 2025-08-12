@@ -3,24 +3,8 @@ import { Component, ElementRef, Inject, inject, OnInit, ViewChild } from '@angul
 import { FormsModule, NgForm } from '@angular/forms';
 import { ModuleService } from '../../Services/module.service';
 import * as _ from 'lodash'
-interface Module {
-  _id?: number | string;
-  title: string;
-  avatar: string;
-  bgColor: string;
-  fontColor: string;
-}
-export interface ScreenSettings {
-  _id?: string;
-  bgColor: string;
-  fontColor: string;
-  fontFamily: string;
-  headings: {
-    line1: string;
-    line2: string;
-  };
-  text: string;
-}
+import { Module, ScreenSettings } from '../../Interfaces/module_Interface';
+
 
 @Component({
   selector: 'app-main',
@@ -46,19 +30,10 @@ export class MainComponent implements OnInit {
   originalScreen! : ScreenSettings;
   screen!: ScreenSettings;
   isSettingsChanged: boolean = false
-  // = {
-  //   bgColor: '#e0e0e0',
-  //   fontColor: '#333333',
-  //   fontFamily: 'Poppins',
-  //   headings: {
-  //     line1: 'What Brings You',
-  //     line2: 'to Silent Moon?'
-  //   },
-  //   text: 'choose a topic to focus on:'
-  // };
-  //Modules
+
   modules?: Module[];
-  isModuleForm : boolean = false
+  formVisible : boolean = false
+  createMode : boolean = false
 
   timeOutId : any = null
   newMode: boolean = false;
@@ -71,6 +46,8 @@ export class MainComponent implements OnInit {
     avatar: '',
     bgColor: '#ffffff',
     fontColor: '#333333',
+    icon:''
+
   };
 
   avatars: string[] = [
@@ -79,6 +56,15 @@ export class MainComponent implements OnInit {
     'happiness',
     'meditation',
     'performance',
+  ];
+  // Icons corresponding to each avatar above (same order)
+  // Use Font Awesome icon class names instead of Ionic icon names
+  icons: string[] = [
+    'fa-bed',         // better-sleep
+    'fa-leaf',        // growth
+    'fa-face-smile',  // happiness
+    'fa-award',       // meditation
+    'fa-chart-line',  // performance
   ];
 
   fontFamilies = [
@@ -190,7 +176,7 @@ export class MainComponent implements OnInit {
    this.isSettingsChanged = true
   }
   onCreateNew(form: NgForm) {
-      let newForm = this.moduleForm;
+      const { _id, ...newForm } = this.moduleForm;
       this.moduleService.createModule(newForm).subscribe({
         next:(response) => {
            console.log(response)
@@ -200,15 +186,38 @@ export class MainComponent implements OnInit {
             avatar: '',
             bgColor: '#ffffff',
             fontColor: '#333333',
+            icon:''
+
         }
         this.loadModules()
+        this.formVisible=false
         },
       })
 
   }
+  onNew() {
+    document.querySelector('.selected')?.classList.remove('selected');
+    let event  = new Event('click')
+    this.editMode = false;
+    this.createMode = true
+    this.moduleForm = {
+      _id: '1',
+      title: '',
+      avatar: '',
+      bgColor: '#ffffff',
+      fontColor: '#333333',
+      icon:''
+    };
+    this.formVisible = true
+    this.modules = [{...this.moduleForm},...this.modules! ]
+
+  }
   moduleClickHandler(module: Module, event: Event) {
     document.querySelector('.selected')?.classList.remove('selected');
+    if(event.currentTarget){
     (event.currentTarget as HTMLElement).classList.toggle('selected');
+
+    }
     const index = this.modules!.findIndex((m) => m._id === module._id);
     this.originalModule = this.modules![index];
     console.log(`originalmodule`, this.originalModule);
@@ -244,8 +253,10 @@ export class MainComponent implements OnInit {
             avatar: '',
             bgColor: '#ffffff',
             fontColor: '#333333',
+            icon:''
           };
           this.loadModules()
+          this.editMode = false
       },
       error(err) {
         console.log(err)
@@ -258,20 +269,24 @@ export class MainComponent implements OnInit {
   }
   onDiscard() {
     document.querySelector('.selected')?.classList.remove('selected');
-    this.editMode = false;
-    if (this.moduleForm._id) {
-      const index = this.modules!.findIndex((m) => m._id === this.moduleForm._id);
-      if (index !== -1 && this.originalModule) {
-        this.modules![index] = this.originalModule;
-      }
-    }
+    this.formVisible = false;
+    // if (this.moduleForm._id) {
+    //   const index = this.modules!.findIndex((m) => m._id === this.moduleForm._id);
+    //   if (index !== -1 && this.originalModule) {
+    //     this.modules![index] = this.originalModule;
+    //   }
+    // }
+      this.modules?.shift()
     this.moduleForm = {
       // _id: '',
       title: '',
       avatar: '',
       bgColor: '#ffffff',
       fontColor: '#333333',
+      icon:''
     };
+    this.createMode = false
+    this.formVisible =false
   }
   onReset() {
     console.log(this.moduleForm)
@@ -283,27 +298,18 @@ export class MainComponent implements OnInit {
         const index = this.modules?.findIndex(m=>m._id === updatedModule!._id)
         let avatar = updatedModule.avatar.split('svgs/')[1].split('.')[0];
 
-        if(index) {
+        if (typeof index === 'number' && index > -1 && Array.isArray(this.modules)) {
           updatedModule = { ...updatedModule, avatar };
-          this.modules![index] = {...updatedModule}
-          this.moduleForm = updatedModule;
-          console.log(this.moduleForm)
+          this.modules[index] = { ...updatedModule };
+          this.moduleForm = { ...updatedModule};
+          this.onFormChange()
+          console.log(this.moduleForm);
         }
 
       }
     }
   }
-  onNew() {
-    document.querySelector('.selected')?.classList.remove('selected');
-    this.editMode = false;
-    this.moduleForm = {
-      // _id: '',
-      title: '',
-      avatar: '',
-      bgColor: '#ffffff',
-      fontColor: '#333333',
-    };
-  }
+
   onDelete() {
     if (this.originalModule?._id) {
       this.borderDiv.nativeElement.classList.add('running-border')
@@ -320,6 +326,7 @@ export class MainComponent implements OnInit {
         avatar: '',
         bgColor: '#ffffff',
         fontColor: '#333333',
+        icon:''
       };
       this.undoMode = true;
        this.timeOutId=  setTimeout(() => {
@@ -328,12 +335,14 @@ export class MainComponent implements OnInit {
            console.log(response)
            this.editMode=false
            this.loadModules()
+      this.undoMode = false;
+
         },
         error(err) {
           console.log(err)
         },
       })
-    }, 3000);
+    }, 0);
     }
   }
   onUndo() {

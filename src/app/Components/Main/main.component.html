@@ -16,34 +16,66 @@
       <div class="space-between">
         <h4>Background</h4>
         <div class="space-between">
-          <input type="color" id="bgColorPicker" [(ngModel)]="screen.bgColor" (ngModelChange)="!isSettingsChanged ? onSettingsChange()  : null" />
-          <input type="text" [(ngModel)]="screen.bgColor" (ngModelChange)="!isSettingsChanged ? onSettingsChange()  : null"/>
+          <input
+            type="color"
+            id="bgColorPicker"
+            [(ngModel)]="screen.bgColor"
+            (ngModelChange)="!isSettingsChanged ? onSettingsChange() : null"
+          />
+          <input
+            type="text"
+            [(ngModel)]="screen.bgColor"
+            (ngModelChange)="!isSettingsChanged ? onSettingsChange() : null"
+          />
         </div>
       </div>
       <div class="space-between">
         <h4>Font</h4>
         <div class="space-between">
-          <input type="color" [(ngModel)]="screen.fontColor" (ngModelChange)="!isSettingsChanged ? onSettingsChange()  : null"/>
-          <input type="text" [(ngModel)]="screen.fontColor" (ngModelChange)="!isSettingsChanged ? onSettingsChange()  : null"/>
+          <input
+            type="color"
+            [(ngModel)]="screen.fontColor"
+            (ngModelChange)="!isSettingsChanged ? onSettingsChange() : null"
+          />
+          <input
+            type="text"
+            [(ngModel)]="screen.fontColor"
+            (ngModelChange)="!isSettingsChanged ? onSettingsChange() : null"
+          />
         </div>
       </div>
       <div class="space-between">
         <h4>Heading 1</h4>
 
-        <input type="text" [(ngModel)]="screen.headings.line1" (ngModelChange)="!isSettingsChanged ? onSettingsChange()  : null"/>
+        <input
+          type="text"
+          [(ngModel)]="screen.headings.line1"
+          (ngModelChange)="!isSettingsChanged ? onSettingsChange() : null"
+        />
       </div>
       <div class="space-between">
         <h4>Heading 2</h4>
 
-        <input type="text" [(ngModel)]="screen.headings.line2" (ngModelChange)="!isSettingsChanged ? onSettingsChange()  : null"/>
+        <input
+          type="text"
+          [(ngModel)]="screen.headings.line2"
+          (ngModelChange)="!isSettingsChanged ? onSettingsChange() : null"
+        />
       </div>
       <div class="space-between">
         <h4>Text</h4>
-        <input type="text" [(ngModel)]="screen.text" (ngModelChange)="!isSettingsChanged ? onSettingsChange()  : null"/>
+        <input
+          type="text"
+          [(ngModel)]="screen.text"
+          (ngModelChange)="!isSettingsChanged ? onSettingsChange() : null"
+        />
       </div>
       <div class="space-between">
         <h4>Font Family</h4>
-        <select [(ngModel)]="screen.fontFamily" (ngModelChange)="!isSettingsChanged ? onSettingsChange()  : null">
+        <select
+          [(ngModel)]="screen.fontFamily"
+          (ngModelChange)="!isSettingsChanged ? onSettingsChange() : null"
+        >
           @for(family of fontFamilies; track family){
           <option [value]="family">{{ family }}</option>
           }
@@ -52,41 +84,27 @@
       <div class="space-between">
         <span></span>
         @if (isSettingsChanged){
-          <button  (click)="onSaveSettings()">Save</button>
+        <button (click)="onSaveSettings()">Save</button>
         }
       </div>
     </div>
-    <!-- <div class="typography padding-bottom">
 
-
-
-    </div> -->
-    <!-- <div class="styles">
-      <h3>styles</h3>
-      <div class="space-between">
-        <h4>Shapes</h4>
-        <select name="" id="">
-          <option value="">serif</option>
-          <option value="">asdasd</option>
-          <option value="">asdsad</option>
-          <option value="">sadsad</option>
-          <option value="">asds</option>
-        </select>
-      </div>
-    </div> -->
     <div class="add-module padding-bottom">
       <h3>modules</h3>
-      <button *ngIf="editMode" (click)="onNew()" id="new">
-        <strong>Create New <em> </em></strong> <i class="fa-solid fa-circle-plus fa-lg" style="color: #5d4037;"></i>
-       </button>
-      <div class="space-between">
+      <button (click)="onNew()" id="new">
+        <strong>Create New <em></em></strong>
+        <i class="fa-solid fa-circle-plus fa-lg" style="color: #5d4037"></i>
+      </button>
+      <div *ngIf="editMode || formVisible" class="space-between">
         <h3 style="color: var(--text-color)">
           {{ editMode ? "edit module" : "Create new" }}
         </h3>
-        <div class="space-between">
-          <div *ngIf="editMode">
 
-            <button  (click)="onReset()">
+        <button *ngIf="createMode" (click)="onDiscard()">Discard</button>
+
+        <div *ngIf="editMode" class="space-between">
+          <div class="space-between">
+            <button (click)="onReset()">
               Reset <em></em
               ><i
                 class="fa-solid fa-clock-rotate-left fa-lg"
@@ -94,18 +112,23 @@
               ></i>
             </button>
             <button #borderDiv (click)="undoMode ? onUndo() : onDelete()">
-              <i *ngIf="!undoMode" class="fa-solid fa-trash fa-lg" style="color: #5d4037;"></i>
-              <i *ngIf="undoMode" class="fa-solid fa-trash-arrow-up fa-lg" style="color: #5d4037;"></i>
+              <i
+                *ngIf="!undoMode"
+                class="fa-solid fa-trash fa-lg"
+                style="color: #5d4037"
+              ></i>
+              <i
+                *ngIf="undoMode"
+                class="fa-solid fa-trash-arrow-up fa-lg"
+                style="color: #5d4037"
+              ></i>
             </button>
           </div>
-
-
         </div>
       </div>
-      @if (isModuleForm){
 
-      }
       <form
+        *ngIf="formVisible || editMode"
         class="module-form"
         #myForm="ngForm"
         (ngSubmit)="editMode ? onSave(myForm) : onCreateNew(myForm)"
@@ -155,12 +178,26 @@
           </select>
         </div>
         <div class="space-between">
+          <h5>Icon</h5>
+          <select
+            name="icon"
+            required
+            [(ngModel)]="moduleForm.icon"
+            (ngModelChange)="onFormChange()"
+          >
+            @for(icon of icons; track icon){
+            <option [value]="icon">
+              {{ icon }}
+            </option>
+            }
+          </select>
+        </div>
+        <div class="space-between">
           <span></span>
           <div>
             <Button [disabled]="myForm.invalid">{{
               editMode ? "Save" : "Create"
             }}</Button>
-
           </div>
         </div>
       </form>
@@ -173,10 +210,11 @@
       [style.fontFamily]="screen.fontFamily"
     >
       <div class="header">
-        <h2 [style.color]="screen.fontColor">{{screen.headings.line1}}</h2>
-        <h2 [style.color]="screen.fontColor">{{screen.headings.line2}}</h2>
-        <h4>{{screen.text}}</h4>
+        <h2 [style.color]="screen.fontColor">{{ screen.headings.line1 }}</h2>
+        <h2 [style.color]="screen.fontColor">{{ screen.headings.line2 }}</h2>
+        <h4>{{ screen.text }}</h4>
       </div>
+      @if(this.modules!.length>0){
       <div class="modules">
         @for (module of modules; track module._id) {
         <div
@@ -186,16 +224,35 @@
           [style.background-image]="'url(' + module.avatar + ')'"
           [style.color]="module.fontColor"
         >
-          <h4 [style.color]="module.fontColor" class="module-title">
-            {{ module.title }}
-          </h4>
+          <div class="space-between">
+            <h4 [style.color]="module.fontColor" class="module-title">
+              {{ module.title }}
+            </h4>
+            <i
+              [class]="'fa fa-lg ' + module.icon"
+              [style.color]="module.fontColor"
+            ></i>
+          </div>
         </div>
         }
       </div>
+      }@else{
+      <div class="modules-else">
+        <p>No modules added yet to show</p>
+      </div>
+      }
+
       <div class="module-footer">
-        <div>
-          <i class="fa-solid fa-circle-notch fa-xl" style="color: #5d4037;"></i>
+        <div class="tab-item">
+          <i [class]="'fa-solid fa-home '" style="color: #5d4037"></i>
+          <span style="font-weight: 500">Home</span>
         </div>
+        @for (module of modules?.slice(0,4); track module){
+        <div class="tab-item">
+          <i [class]="'fa-solid ' + module.icon" style="color: #5d4037"></i>
+          <span>{{ module.title }}</span>
+        </div>
+        }
       </div>
     </div>
   </main>
@@ -206,7 +263,3 @@
     <a href="https://storyset.com/people" target="_blank">Storyset</a>
   </p>
 </footer>
-
-
-
-

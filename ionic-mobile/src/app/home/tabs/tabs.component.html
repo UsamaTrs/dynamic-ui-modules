@@ -1,23 +1,49 @@
+<ion-router-outlet></ion-router-outlet>
 <ion-tabs>
-  <ion-router-outlet></ion-router-outlet>
 
-  <ion-tab-bar slot="bottom" style="--border-radius: 50%; --ion-tab-bar-background: #d7ccc8; --ion-tab-bar-border-color: transparent; height: 80px">
-    <ion-tab-button tab="home" routerLink="/tabs/home">
-      <ion-icon name="home"></ion-icon>
-      <ion-label>Profile</ion-label>
+  <ion-tab-bar
+  slot="bottom"
+  >
+    <ion-tab-button  href="/tabs">
+      <div class="tab-item">
+        <i [class]="'fa fa-' + 'home' + ' fa-2xl'"></i>
+        <ion-label style="font-size: small; font-weight: 600"
+          >Home</ion-label
+        >
+      </div>
     </ion-tab-button>
-     @for (tab of tabs; track tab._id){
-      <ion-tab-button tab="tab._id" routerLink="/tab/2"  style="--padding-top: 0; --padding-bottom: 0">
-        <div class="tab-content"
-             [style.background-color]="tab.bgColor"
-             [style.background-image]="'url(' + tab.avatar + ')'"
-             style="width: 50px; height: 50px; background-size: contain; background-position: center; background-repeat: no-repeat;border-radius: 50%;">
-        </div>
-        <ion-label [style.color]="tab.fontColor" style="font-size: 12px; margin-top: 5px">{{ tab.title }}</ion-label>
-      </ion-tab-button>
-     }
-  </ion-tab-bar>
+    @for (tab of tabs.slice(0,4); track tab._id) {
+
+    <ion-tab-button   href="/tabs/tab/{{tab._id}}">
+      <div class="tab-item">
+        <i [class]="'fa fa-2xl ' + tab.icon"></i>
+        <ion-label>{{ tab.title }}</ion-label>
+      </div>
+    </ion-tab-button>
+
+  }
+</ion-tab-bar>
 </ion-tabs>
+ <!-- <ion-tab-button
+      [routerLink]="['tab',tab._id]"
+      style="--padding-top: 0; --padding-bottom: 0"
+      >
+      <div class="tab-item">
+        <i [class]="'fa fa-2xl ' + tab.icon"></i>
+        <ion-label style="font-size: var(--font-size-sm); white-space: nowrap; max-width: 6ch;">{{
+          tab.title
+        }}</ion-label>
+      </div>
+    </ion-tab-button> -->
+<!-- (click)="onTabClick(tab._id)" -->
+
+<!-- (click)="onTabClick(tab._id)" -->
+<!-- <ion-label [style.color]="tab.fontColor" style="font-size: 12px; margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60px;">{{ tab.title }}</ion-label> -->
+<!-- <div class="tab-content"
+[style.background-color]="tab.bgColor"
+[style.background-image]="'url(' + tab.avatar + ')'"
+style="width: 50px; height: 50px; background-size: contain; background-position: center; background-repeat: no-repeat; border-radius: 50%;">
+</div> -->
 <!-- [routerLink]="['/tabs/tab', tab._id]" -->
 <!-- <ion-tab-button tab="profile" routerLink="/tabs/profile">
   <ion-icon name="person"></ion-icon>
